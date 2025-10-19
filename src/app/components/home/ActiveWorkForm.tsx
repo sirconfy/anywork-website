@@ -1,8 +1,7 @@
-
-
 "use client";
 
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function ActiveWorkForm() {
   const [formData, setFormData] = useState({
@@ -14,7 +13,6 @@ export default function ActiveWorkForm() {
     email: "",
   });
 
-  // The words that will rotate
   const words = [
     "Boss,",
     "Sir,",
@@ -29,13 +27,12 @@ export default function ActiveWorkForm() {
 
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
 
-  //  Change every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWordIndex((prev) => (prev + 1) % words.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [words.length]);
+  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -50,31 +47,77 @@ export default function ActiveWorkForm() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F9FD]">
-      {/* Animated Greeting + Sentence */}
-      <h1 className="text-2xl sm:text-3xl font-bold text-center mb-6 pt-20 flex justify-center items-center gap-2">
-        {/* Animated Word */}
-        <span
-          key={currentWordIndex}
-          className="text-secondary inline-block transition-all duration-700 ease-in-out animate-fadeInUp"
-        >
-          {words[currentWordIndex]}
-        </span>
+    <div className="min-h-screen bg-[#F5F9FD] overflow-hidden">
+      
+      <motion.h1
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.6 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="text-2xl sm:text-3xl font-bold text-center mb-6 pt-20 flex justify-center items-center gap-2"
+      >
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={currentWordIndex}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.5 }}
+            className="text-secondary inline-block"
+          >
+            {words[currentWordIndex]}
+          </motion.span>
+        </AnimatePresence>
         <span className="text-textcolor">We’re Active. Any Work?</span>
-      </h1>
+      </motion.h1>
 
       {/* ===== FORM SECTION ===== */}
-      <div className="flex items-center justify-center pb-20">
-        <div className="bg-white shadow-md rounded-2xl p-6 sm:p-8 w-[90%] md:max-w-xl">
-          <p className="text-center text-[#282E3280] text-sm mb-6">
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 1 }}
+        className="flex items-center justify-center pb-20"
+      >
+        <motion.div
+          initial={{ y: 50, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="bg-white shadow-lg rounded-2xl p-6 sm:p-8 w-[90%] md:max-w-xl relative overflow-hidden"
+        >
+          
+          <motion.div
+            className="absolute inset-0 opacity-5 bg-gradient-to-br from-sky-400 via-transparent to-blue-200"
+            animate={{ backgroundPosition: ["0% 0%", "100% 100%"] }}
+            transition={{
+              duration: 10,
+              ease: "linear",
+              repeat: Infinity,
+              repeatType: "mirror",
+            }}
+          />
+
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+            className="text-center text-[#282E3280] text-sm mb-6 relative z-10"
+          >
             Tell us what you need and we&apos;ll connect you to the right artisan!
             <br />
             Provide the work details below.
-          </p>
+          </motion.p>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
             {/* Service Details */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+            >
               <label className="block text-sm text-[#282E32] font-[500] mb-1">
                 Service Details
               </label>
@@ -90,10 +133,15 @@ export default function ActiveWorkForm() {
                 <option value="Electrician">Electrician</option>
                 <option value="Cleaner">Cleaner</option>
               </select>
-            </div>
+            </motion.div>
 
             {/* Location */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
               <label className="block text-sm text-[#282E32] font-[500] mb-1">
                 Location
               </label>
@@ -105,10 +153,15 @@ export default function ActiveWorkForm() {
                 placeholder="e.g. Victoria Island, Ikeja"
                 className="w-full text-[#282E3280] rounded-md border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm bg-[#F8F8F8]"
               />
-            </div>
+            </motion.div>
 
             {/* Urgency */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
               <label className="block text-sm text-[#282E32] font-[500] mb-1">
                 Urgency
               </label>
@@ -125,16 +178,28 @@ export default function ActiveWorkForm() {
                 <option value="Within 24 hours">Within 24 hours</option>
                 <option value="Next week">Next week</option>
               </select>
-            </div>
+            </motion.div>
 
             <hr className="my-6 border-[#F1F1F1]" />
 
-            {/* Contact Info */}
-            <h2 className="text-sm font-semibold text-[#282E32]">
+            <motion.h2
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+              className="text-sm font-semibold text-[#282E32]"
+            >
               Contact Information
-            </h2>
+            </motion.h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Contact Fields */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.5, duration: 0.5 }}
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+            >
               <div>
                 <label className="block text-sm text-[#282E32] font-[500] mb-1">
                   Full Name <span className="text-red-500">*</span>
@@ -162,9 +227,15 @@ export default function ActiveWorkForm() {
                   className="w-full rounded-md border text-[#282E3280] border-gray-300 px-3 py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm bg-[#F8F8F8]"
                 />
               </div>
-            </div>
+            </motion.div>
 
-            <div>
+            {/* Email */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.6, duration: 0.5 }}
+            >
               <label className="block text-sm text-[#282E32] font-[500] mb-1">
                 Email Address
               </label>
@@ -176,43 +247,45 @@ export default function ActiveWorkForm() {
                 placeholder="your.email@example.com"
                 className="w-full rounded-md border border-gray-300 px-3 text-[#282E3280] py-2 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 text-sm bg-[#F8F8F8]"
               />
-            </div>
+            </motion.div>
 
-            <div className="flex justify-center my-6">
-              <button
+            {/* Submit Button */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.7, duration: 0.5 }}
+              className="flex justify-center my-6"
+            >
+              <motion.button
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                }}
+                whileTap={{ scale: 0.97 }}
                 type="submit"
-                className="w-[40%] mx-auto bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-primary transition cursor-pointer"
+                className="w-[40%] mx-auto bg-primary text-white py-2.5 rounded-lg font-medium hover:bg-sky-600 transition cursor-pointer"
               >
                 Find an Artisan
-              </button>
-            </div>
+              </motion.button>
+            </motion.div>
           </form>
 
-          <p className="text-center text-sm text-[#282E3280] mt-4">
+          {/* Bottom Link */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.9, duration: 0.8 }}
+            className="text-center text-sm text-[#282E3280] mt-4 relative z-10"
+          >
             Want to become an AnyWork artisan?{" "}
             <a href="#" className="text-secondary font-medium hover:underline">
               Create your account now.
             </a>
-          </p>
-        </div>
-      </div>
-
-      {/* Tailwind animation */}
-      <style jsx>{`
-        @keyframes fadeInUp {
-          0% {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fadeInUp {
-          animation: fadeInUp 0.7s ease-in-out;
-        }
-      `}</style>
+          </motion.p>
+        </motion.div>
+      </motion.div>
     </div>
   );
 }
